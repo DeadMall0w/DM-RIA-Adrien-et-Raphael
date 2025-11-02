@@ -41,4 +41,58 @@ function creat_illustration($image,$logo,$texte,$dimension_IX,$dimension_IY,$dim
 	$SQL = "INSERT INTO `Illustration` (`ID`, `Image`, `Logo`, `Texte`, `Dimension_QR`, `Dimension_IX`, `Dimension_IY`, `P_Texte`, `P_QR`, `Createur`, `complement`) VALUES (NULL, '$image', '$logo', '$texte', '$dimension_QR', '$dimension_IX', '$dimension_IY', '$P_Texte', '$P_QR', '$id', '$complement')";
 	return SQLGetChamp($SQL);
 }
+
+function liste_creation($createur)
+{
+	$SQL = "SELECT ID , Texte 
+			FROM `Illustration` 
+			WHERE Createur='$createur';";
+	$SQL=SQLSelect($SQL);
+	return parcoursRs($SQL);		
+}
+
+function select_illustation($id)
+{
+	$SQL = "SELECT * 
+	FROM `Illustration` 
+	WHERE ID = '$id';";
+	$SQL=SQLSelect($SQL);
+	return parcoursRs($SQL);
+}
+
+function liste_recompense($id)
+{
+	$SQL = "SELECT `Illustration`.ID , `Illustration`.Texte
+	FROM `Recevoir` JOIN `Illustration`
+		ON `Recevoir`.ID_Illustration = `Illustration`.ID JOIN `Personne`
+    		ON `Personne`.ID = `Recevoir`.ID_Personne
+	WHERE `Recevoir`.ID_Personne = '$id';";
+	$SQL=SQLSelect($SQL);
+	return parcoursRs($SQL);		
+}
+
+function liste_recu($id)
+{
+	$SQL = "SELECT `Personne`.`Nom`, `Personne`.`Prenom`, `Recevoir`.`DateReception`
+	FROM `Recevoir` JOIN `Illustration`
+		ON `Recevoir`.ID_Illustration = `Illustration`.ID JOIN `Personne`
+    		ON `Personne`.ID = `Recevoir`.ID_Personne
+	WHERE `Illustration`.ID = '$id'
+	ORDER BY `Recevoir`.`DateReception`;";
+	$SQL=SQLSelect($SQL);
+	return parcoursRs($SQL);		
+}
+
+
+function liste_pas_recu($id)
+{
+	$SQL = "SELECT `Personne`.Nom, `Personne`.Prenom
+				FROM `Personne`
+					WHERE `Personne`.ID NOT IN (
+    					SELECT `Recevoir`.ID_Personne
+    						FROM `Recevoir` 
+    							WHERE `Recevoir`.ID_Illustration = $id);";
+	$SQL=SQLSelect($SQL);
+	return parcoursRs($SQL);	
+}
 ?>

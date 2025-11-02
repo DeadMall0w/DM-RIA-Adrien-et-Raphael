@@ -67,7 +67,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
 		// Si l'utilisateur est connecte : lien de conversations
 		if (valider("connecte","SESSION"))
-			echo mkHeadLink("afficher QR-code reçu","conversations",$view); 
+			echo mkHeadLink("afficher QR-code reçu","afficher_qr_code_recus",$view); 
 			//echo mkHeadLink("Se deconnecter ","conversations",$view); 
 			if (valider("professeur", "SESSION")) {
 				echo mkHeadLink("afficher QR-code créer","afficher_qr_code_creer",$view); 

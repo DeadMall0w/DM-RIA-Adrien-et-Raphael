@@ -10,22 +10,21 @@
 // Pas de soucis de bufferisation, puisque c'est dans le cas où on appelle directement la page sans son contexte
 if (basename($_SERVER["PHP_SELF"]) != "index.php")
 {
-	header("Location:../index.php?view=afficher_qr_code_creer");
+	header("Location:../index.php?view=afficher_qr_code_recus");
 	die("");
 }
-
 
 
 ?>
 
 
 <div class="page-header">
-  <h1>Liste des QR-codes créer : </h1>
+  <h1>Liste des QR-codes reçus : </h1>
 </div>
 
 <?php 
 
-    $SQL=liste_creation($_SESSION["ID"]);
+    $SQL=liste_recompense($_SESSION["ID"]);
     if(isset($SQL) && !empty($SQL)){
         foreach ($SQL as $v) {
             echo '<button style="dysplay:inherit;" id="bouton" onclick="window.location.href = \'http://localhost/dm/qr/tinyMVC-bootstrap/index.php?view=afficher_info&id=';
@@ -33,7 +32,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
 			echo '\';">';
 			echo  $v["Texte"];
 			echo '</button>';
-			echo "<BR>";
+            echo "<BR>";
         }
     }
 
