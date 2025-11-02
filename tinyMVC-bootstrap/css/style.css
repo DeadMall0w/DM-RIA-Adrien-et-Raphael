@@ -1,0 +1,25 @@
+
+.navbar-header img {
+  max-width: 150px;
+  max-height: 50px;
+  margin: 0px 30px;
+}
+
+#message {
+  background-color: lightblue;
+  padding: 5px 10px;
+  margin: 5px 10px;
+  border: 2px solid blue;
+  text-align: center;
+}
+
+table, table th, table td {
+  border: 1px solid black;
+}
+
+table th {
+  font-weight: normal;
+  text-align: left;
+  background-color: lightgray;
+}
+
