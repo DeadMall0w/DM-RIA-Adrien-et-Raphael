@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : dim. 02 nov. 2025 à 14:38
+-- Généré le : lun. 03 nov. 2025 à 06:37
 -- Version du serveur : 10.11.13-MariaDB-0ubuntu0.24.04.1
 -- Version de PHP : 8.3.6
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `DM_RIA_2025`
+-- Base de données : `dm_ria_2025`
 --
 
 -- --------------------------------------------------------
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `Illustration` (
   `ID` int(11) NOT NULL,
-  `Image` varchar(250) DEFAULT NULL,
+  `Image` varchar(1000) DEFAULT NULL,
   `Logo` varchar(250) DEFAULT NULL,
   `Texte` varchar(250) DEFAULT NULL,
   `Dimension_QR` int(11) DEFAULT NULL,
@@ -46,7 +46,9 @@ CREATE TABLE `Illustration` (
 --
 
 INSERT INTO `Illustration` (`ID`, `Image`, `Logo`, `Texte`, `Dimension_QR`, `Dimension_IX`, `Dimension_IY`, `P_Texte`, `P_QR`, `Createur`, `complement`) VALUES
-(2, 'image', 'logo', 'texte', 4, 5, 3, 1, 3, 4, 'bla bla  ');
+(6, 'https://img.freepik.com/photos-gratuite/composition-livre-livre-ouvert_23-2147690555.jpg?semt=ais_hybrid&w=740&q=80', '', 'Read the F****ng manual', 10, 600, 600, 1, 1, 13, ''),
+(7, 'https://securinglaravel.com/content/images/size/w1200/2024/09/Securing-Laravel---Arrow-Frame--1-.png', '', 'Never Trust User Input', 10, 1000, 700, 3, 1, 13, ''),
+(8, 'https://media.licdn.com/dms/image/v2/D5612AQFvIu8uQaM8hQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1739334807217?e=2147483647&v=beta&t=wL5JMOwQgUeP2t_6mL6KyThcrDnpeNXteIzwWhtD-4s', '', 'Build Done', 10, 1400, 800, 3, 1, 13, '');
 
 -- --------------------------------------------------------
 
@@ -79,8 +81,9 @@ CREATE TABLE `Personne` (
 --
 
 INSERT INTO `Personne` (`ID`, `Nom`, `Prenom`, `Code`, `Professeur`) VALUES
-(3, 'adrien', 'maes', 'a', 0),
-(4, 'lea', 'lea', 'a', 1);
+(10, 'Berquier', 'Raphael', '123', 0),
+(12, 'Maes', 'Adrien', 'a', 0),
+(13, 'Bourdeaud\'huy', 'Thomas', 'abc', 1);
 
 -- --------------------------------------------------------
 
@@ -94,6 +97,14 @@ CREATE TABLE `Recevoir` (
   `ID_Personne` int(11) NOT NULL,
   `DateReception` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `Recevoir`
+--
+
+INSERT INTO `Recevoir` (`ID`, `ID_Illustration`, `ID_Personne`, `DateReception`) VALUES
+(9, 8, 10, '2025-11-03'),
+(10, 8, 13, '2025-11-03');
 
 --
 -- Index pour les tables déchargées
@@ -135,7 +146,7 @@ ALTER TABLE `Recevoir`
 -- AUTO_INCREMENT pour la table `Illustration`
 --
 ALTER TABLE `Illustration`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT pour la table `Page`
@@ -147,13 +158,13 @@ ALTER TABLE `Page`
 -- AUTO_INCREMENT pour la table `Personne`
 --
 ALTER TABLE `Personne`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT pour la table `Recevoir`
 --
 ALTER TABLE `Recevoir`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Contraintes pour les tables déchargées
