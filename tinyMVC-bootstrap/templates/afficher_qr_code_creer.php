@@ -28,8 +28,8 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
     $SQL=liste_creation($_SESSION["ID"]);
     if(isset($SQL) && !empty($SQL)){
         foreach ($SQL as $v) {
-            echo '<button style="dysplay:inherit;" id="bouton" onclick="window.location.href = \'http://localhost/dm/qr/tinyMVC-bootstrap/index.php?view=afficher_info&id=';
-  			echo $v["ID"];
+            echo '<button style="display:inherit;" id="bouton" onclick="window.location.href = \'index.php?view=afficher_info&id=';
+            echo $v["ID"];
 			echo '\';">';
 			echo  $v["Texte"];
 			echo '</button>';

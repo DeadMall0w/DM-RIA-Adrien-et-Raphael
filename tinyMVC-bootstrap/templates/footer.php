@@ -21,7 +21,7 @@ if (basename($_SERVER["PHP_SELF"]) != "index.php")
    	 <p class="text-muted credit">
 		<?php
 		// Si l'utilisateur est connecte, on affiche un lien de deconnexion 
-		tprint($_SESSION);
+		// tprint($_SESSION);
 		if (valider("connecte","SESSION"))
 		{
 			echo "Utilisateur : <b>$_SESSION[nom] $_SESSION[prenom]</b> &nbsp; "; 

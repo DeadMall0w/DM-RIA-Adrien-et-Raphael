@@ -38,7 +38,13 @@
 						"message" => "Connexion réussie, bienvenue " . $_SESSION["nom"] . " " . $_SESSION["prenom"] . " !"]);
 			} 
 		}
-	}else if (valider("action") == "deconnexion") {
+	}else if (valider("action") == "changerRecompense"){
+
+
+
+
+	}
+	else if (valider("action") == "deconnexion") {
 			// Rediriger vers l'accueil
 	        $_SESSION = [];
       	    session_destroy();
@@ -50,35 +56,6 @@
                   ["view" => "accueil",
                    "message" => "Connexion réussie, bienvenue " . $_SESSION["nom"] . " " . $_SESSION["prenom"] . " !"]);
 
-		}else if (valider("action") == "creation"){
-			$image = valider("image","GET");
-			$logo = valider("logo","GET");
-			$texte = valider("texte", "GET"); 
-			$complement= valider("complement","GET");
-			$dimension_IX = valider("dimension_IX","GET");
-			$dimension_IY = valider("dimension_IY","GET");
-			$dimension_QR= valider("dimension_QR","GET");
-			$dimension_IX = sqrt($dimension_IX*$dimension_IX);
-			$dimension_IY = sqrt($dimension_IY*$dimension_IY);
-			$dimension_QR= sqrt($dimension_QR*$dimension_QR);
-			$P_QR = valider("P_QR","GET");
-			$P_Texte = valider("P_Texte","GET");
-			$_SESSION["image"]=$image;
-			$_SESSION["logo"]=$logo;
-			$_SESSION["texte"]=$texte; 
-			$_SESSION["complement"]=$complement;
-			$_SESSION["dimension_IX"]=$dimension_IX;
-			$_SESSION["dimension_IY"]=$dimension_IY;
-			$_SESSION["dimension_QR"]=$dimension_QR;
-			$_SESSION["P_QR"]=$P_QR;
-			$_SESSION["P_Texte"]=$P_Texte;
-			$_SESSION["test"]=creat_illustration($image,$logo,$texte,$dimension_IX,$dimension_IY,$dimension_QR,$complement,$P_QR,$P_Texte,$_SESSION["ID"]);
-
-
-			//creer_illustration();
-			rediriger("index.php",
-                  ["view" => "accueil",
-                   "message" => "creation réussi !"]);
 
 		}else if (valider("action") == "creer_utilisateur"){
 			$nom = valider("nom","GET");
@@ -102,11 +79,6 @@
 							"message" => "Compte créé ! Bienvenue " . $_SESSION["nom"] . " " . $_SESSION["prenom"] . " !"]);
 				} 
 			}
-
-		}else if (valider("action") == "redirectionU"){
-			rediriger("index.php",
-                  ["view" => "creer_utilisateur",
-                   "message" => "Créer utilisateur  !"]);
 
 		}else {
         	// Message d'erreur
@@ -132,6 +104,22 @@
 		switch($action)
 		{
 		  // Actions sur les utilisateurs
+		  case 'changerRecompense':
+			$id_utilisateur = intval($_GET['id_utilisateur'] ?? 0);
+			$id_illustration = intval($_GET['id_illustration'] ?? 0);
+
+			$ajouter = isset($_GET['ajouter']) && $_GET['ajouter'] == '1' ? true : false;
+			
+			// Vérification des valeurs
+			if ($id_utilisateur > 0 && $id_illustration > 0) {
+				changerRecompenseUtilisateur($ajouter, $id_utilisateur, $id_illustration);
+			}
+
+			rediriger("index.php",
+    	          ["view" => "afficher_info", "id" => $id_illustration]);
+
+			break;
+
 			case 'Interdire' : 
 			  if (($idUser = valider("idUser", "GET")) &&
 			      valider("admin", "SESSION")) {
@@ -140,7 +128,6 @@
 		      $qs["message"] = "Opération échouée";
 			  }
 			break;
-
 			case 'Autoriser' : 
 			  if (($idUser = valider("idUser", "GET")) &&
 			      valider("admin", "SESSION")) {

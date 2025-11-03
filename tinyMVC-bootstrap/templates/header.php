@@ -72,7 +72,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 			if (valider("professeur", "SESSION")) {
 				echo mkHeadLink("afficher QR-code créer","afficher_qr_code_creer",$view); 
 				echo mkHeadLink("Créer un QR-code","creation",$view);
-  				echo mkHeadLink("Admin","admin",$view); 
+  				// echo mkHeadLink("Admin","admin",$view); 
 			}
 		?>
         </ul>

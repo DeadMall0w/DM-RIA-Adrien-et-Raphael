@@ -25,36 +25,56 @@ $Illustration=select_illustation($ID);
 
 <h1> <?php echo $Illustration[0]["Texte"];?></h1>
 
-// Illustration
+<?php
+$texte = $Illustration[0]["Texte"];
+$largeur = $Illustration[0]["Dimension_IX"];
+$hauteur = $Illustration[0]["Dimension_IY"];
+$posTexte = $Illustration[0]["P_Texte"];
+$url = $Illustration[0]["Image"];
+
+
+
+?>
+
+<img src="templates/image_controller.php?action=afficher_image&texte=<?= urlencode($texte) ?>&x=<?= intval($largeur) ?>&y=<?= intval($hauteur) ?>&posTexte=<?= intval($posTexte) ?>&urlImage=<?= urlencode($url) ?>"
+     alt="Illustration générée"
+     style="border:1px solid black;">
+
 
 <p> <?php echo $Illustration[0]["complement"];?> </p>
 
 <?php 
 
-    if ( $_SESSION["professeur"]==1){
-        echo "<h2>éléves ayant reçu la récompense : </h2>";
-        $recu=liste_recu($ID);
-        if(isset($recu) && !empty($recu)){
+if ($_SESSION["professeur"] == 1 && $_SESSION["ID"] == $Illustration[0]["Createur"]) {
+
+    $id_illustration =  $Illustration[0]["ID"];
+    
+    echo "<h2>Élèves ayant reçu la récompense :</h2>";
+    $recu = liste_recu($ID);
+    if (!empty($recu)) {
         foreach ($recu as $v) {
-            echo " - ";
-            echo $v["Nom"];
-			echo ", ";
-			echo  $v["Prenom"];
-            echo ", ";
-            echo  $v["DateReception"];
-            echo "<BR>";
+            echo '<div>';
+            echo htmlspecialchars($v["Nom"]) . ", " . htmlspecialchars($v["Prenom"]) . " - " . $v["DateReception"];
+            // Lien pour retirer la récompense
+            echo ' <a href="controleur.php?action=changerRecompense&id_utilisateur='
+     . $v["ID"] . '&ajouter=0&id_illustration=' . $id_illustration . '">Retirer</a>';
+
+            echo '</div>';
         }
     }
-        echo "<h2>éléves n'ayant pas reçu la récompense : </h2>";
-        $pasrecu=liste_pas_recu($ID);
-        if(isset($pasrecu) && !empty($pasrecu)){
+
+    echo "<h2>Élèves n'ayant pas reçu la récompense :</h2>";
+    $pasrecu = liste_pas_recu($ID);
+    if (!empty($pasrecu)) {
         foreach ($pasrecu as $v) {
-            echo " - ";
-            echo $v["Nom"];
-			echo ", ";
-			echo  $v["Prenom"];
-            echo "<BR>";
-        }
+            echo '<div>';
+            echo htmlspecialchars($v["Nom"]) . ", " . htmlspecialchars($v["Prenom"]);
+            // Lien pour ajouter la récompense
+            echo ' <a href="controleur.php?action=changerRecompense&id_utilisateur='
+     . $v["ID"] . '&ajouter=1&id_illustration=' . $id_illustration . '">Ajouter</a>';
+
+            echo '</div>';
         }
     }
+}
 ?>

@@ -36,10 +36,16 @@ function creatU($nom,$prenom,$passe)
     return SQLGetChamp($SQL);
 }
 
-function creat_illustration($image,$logo,$texte,$dimension_IX,$dimension_IY,$dimension_QR,$complement,$P_QR,$P_Texte,$id)
+function creat_illustration($image,$logo,$texte,$dimension_IX,$dimension_IY,$dimension_QR,$complement,$P_QR,$P_Texte)
 {
-	$SQL = "INSERT INTO `Illustration` (`ID`, `Image`, `Logo`, `Texte`, `Dimension_QR`, `Dimension_IX`, `Dimension_IY`, `P_Texte`, `P_QR`, `Createur`, `complement`) VALUES (NULL, '$image', '$logo', '$texte', '$dimension_QR', '$dimension_IX', '$dimension_IY', '$P_Texte', '$P_QR', '$id', '$complement')";
-	return SQLGetChamp($SQL);
+	$createur = $_SESSION["ID"];
+	$SQL = "INSERT INTO `Illustration` 
+        (`Image`, `Logo`, `Texte`, `Dimension_QR`, `Dimension_IX`, `Dimension_IY`, `P_Texte`, `P_QR`, `Createur`, `complement`)
+        VALUES
+        ('$image', '$logo', '$texte', $dimension_QR, $dimension_IX, $dimension_IY, $P_Texte, $P_QR, '$createur', '$complement')";
+
+	// die($SQL);
+    return SQLGetChamp($SQL);
 }
 
 function liste_creation($createur)
@@ -73,7 +79,7 @@ function liste_recompense($id)
 
 function liste_recu($id)
 {
-	$SQL = "SELECT `Personne`.`Nom`, `Personne`.`Prenom`, `Recevoir`.`DateReception`
+	$SQL = "SELECT `Personne`.`Nom`, `Personne`.`Prenom`, `Recevoir`.`DateReception`, `Personne`.`ID`
 	FROM `Recevoir` JOIN `Illustration`
 		ON `Recevoir`.ID_Illustration = `Illustration`.ID JOIN `Personne`
     		ON `Personne`.ID = `Recevoir`.ID_Personne
@@ -83,10 +89,29 @@ function liste_recu($id)
 	return parcoursRs($SQL);		
 }
 
+function changerRecompenseUtilisateur($ajouter, $id_utilisateur, $id_illustration) {
+    $id_utilisateur = intval($id_utilisateur);
+    $id_illustration = intval($id_illustration);
+
+    if ($ajouter) {
+        // Ajouter la récompense
+        $SQL = "INSERT INTO `Recevoir` (`ID_Illustration`, `ID_Personne`, `DateReception`) 
+                VALUES ($id_illustration, $id_utilisateur, NOW())";
+    } else {
+        // Retirer la récompense
+        $SQL = "DELETE FROM `Recevoir` 
+                WHERE `ID_Illustration` = $id_illustration 
+                  AND `ID_Personne` = $id_utilisateur";
+    }
+
+    // Exécution de la requête
+    return SQLGetChamp($SQL); // On garde ton wrapper SQL
+}
+
 
 function liste_pas_recu($id)
 {
-	$SQL = "SELECT `Personne`.Nom, `Personne`.Prenom
+	$SQL = "SELECT `Personne`.Nom, `Personne`.Prenom, `Personne`.`ID`
 				FROM `Personne`
 					WHERE `Personne`.ID NOT IN (
     					SELECT `Recevoir`.ID_Personne
